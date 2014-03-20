@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>madsgraphics/alfred-vhosts</string>
+	<key>connections</key>
+	<dict>
+		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7DAF4F19-A80D-45F2-99D0-0B2E0B57E2EC</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>madsgraphics</string>
+	<key>description</key>
+	<string>Open a local vhost</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>VHosts</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>vhost</string>
+				<key>runningsubtext</key>
+				<string>Searching for vhost with "{query}"</string>
+				<key>script</key>
+				<string>#!/bin/bash
+
+CONFS="/usr/local/etc/nginx/sites-enabled"
+EXT="dev"
+
+results=$(grep -ohe "server_name[ \t]\+\*\?[a-z0-9_.-]\+\.$EXT" $CONFS/*.conf | awk '{print $2}' | grep "{query}" | sort)
+
+out=""; count=0
+for vhost in $results; do
+  count=$((count+1))
+  if [ $count -gt 20 ]; then break; fi
+
+  title=$vhost
+  subtitle="Open $vhost"
+
+  out+="&lt;item arg=\"http://$vhost\" uid=\"vhost-$(date +%s)\" valid=\"yes\"&gt;\
+          &lt;title&gt;$title&lt;/title&gt;\
+          &lt;subtitle&gt;$subtitle&lt;/subtitle&gt;\
+      &lt;/item&gt;"
+done
+echo "&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;&lt;items&gt;$out&lt;/items&gt;"
+</string>
+				<key>subtext</key>
+				<string>Search for vhost</string>
+				<key>title</key>
+				<string>Open local vhost</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>7DAF4F19-A80D-45F2-99D0-0B2E0B57E2EC</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>7DAF4F19-A80D-45F2-99D0-0B2E0B57E2EC</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>7DD3BDE5-A157-42E5-9376-F681FB50A4EE</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://github.com/madsgraphics/alfred-vhosts</string>
+</dict>
+</plist>
