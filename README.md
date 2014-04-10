@@ -1,4 +1,4 @@
-‹# Alfred VHOST Workflow
+# Alfred VHOST Workflow
 
 ![image](./screenshot.png)
 
